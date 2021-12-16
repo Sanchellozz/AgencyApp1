@@ -9,26 +9,35 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+@using (Html.BeginForm())
+{
+    <tr>
+    <td>
+        Find by name: @Html.TextBox("SearchString")  
+        <input type="submit" value="Search" />
+    </td>
+    </tr>
+}
 <table class="table">
     <thead>
         <tr>
             <th>
-                Номер
+                @Html.ActionLink("Номер", "Index", new { sortOrder = ViewBag.IdSortParm })
             </th>
             <th>
-                Дата заключения
+                @Html.ActionLink("Дата заключения", "Index", new { sortOrder = ViewBag.DateSortParm })
             </th>
             <th>
-                Пакет страхования
+                @Html.ActionLink("Пакет страхования", "Index", new { sortOrder = ViewBag.DicSortParm })
             </th>
             <th>
-                Имя клиента
+                 @Html.ActionLink("Имя клиента", "Index", new { sortOrder = ViewBag.ClientNameSortParm })
             </th>
             <th>
-                Имя агента
+                @Html.ActionLink("Имя агента", "Index", new { sortOrder = ViewBag.AgentNameSortParm })
             </th>
             <th>
-                Цена
+                @Html.ActionLink("Цена", "Index", new { sortOrder = ViewBag.PriceSortParm })
             </th>
             <th></th>
         </tr>

@@ -21,10 +21,66 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Contracts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            var agencyDBContext = _context.Contract.Include(c => c.Agent).Include(c => c.Client).Include(c => c.Dictionary);
-            return View(await agencyDBContext.ToListAsync());
+            ViewBag.ClientNameSortParm = sortOrder == "ClientName" ? "ClientName_desc" : "ClientName";
+            ViewBag.AgentNameSortParm = sortOrder == "AgentName" ? "AgentName_desc" : "AgentName";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewBag.IdSortParm = sortOrder == "Id" ? "Id_desc" : "Id";
+            ViewBag.DicSortParm = sortOrder == "Dic" ? "Dic_desc" : "Dic";
+            ViewBag.PriceSortParm = sortOrder == "Price" ? "Price_desc" : "Price";
+            var contracts = from s in _context.Contract.Include(c => c.Agent).Include(c => c.Client).Include(c => c.Dictionary)
+            select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                contracts = contracts.Where(s => s.Client.Name.Contains(searchString)
+                                       || s.Agent.Name.Contains(searchString)
+                                       || s.Dictionary.Price.Equals(searchString)
+                                       || s.Dictionary.Name.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "ClientName":
+                    contracts = contracts.OrderBy(s => s.Client.Name);
+                    break;
+                case "ClientName_desc":
+                    contracts = contracts.OrderByDescending(s => s.Client.Name);
+                    break;
+                case "AgentName":
+                    contracts = contracts.OrderBy(s => s.Agent.Name);
+                    break;
+                case "AgentName_desc":
+                    contracts = contracts.OrderByDescending(s => s.Agent.Name);
+                    break;
+                case "Date":
+                    contracts = contracts.OrderBy(s => s.Date);
+                    break;
+                case "date_desc":
+                    contracts = contracts.OrderByDescending(s => s.Date);
+                    break;
+                case "Id":
+                    contracts = contracts.OrderBy(s => s.ContractId);
+                    break;
+                case "Id_desc":
+                    contracts = contracts.OrderByDescending(s => s.ContractId);
+                    break;
+                case "Dic":
+                    contracts = contracts.OrderBy(s => s.Dictionary.Name);
+                    break;
+                case "Dic_desc":
+                    contracts = contracts.OrderByDescending(s => s.Dictionary.Name);
+                    break;
+                case "Price":
+                    contracts = contracts.OrderBy(s => s.Dictionary.Price);
+                    break;
+                case "Price_desc":
+                    contracts = contracts.OrderByDescending(s => s.Dictionary.Price);
+                    break;
+                default:
+                    contracts = contracts.OrderBy(s => s.ContractId);
+                    break;
+            }
+            return View(contracts.ToList());
         }
 
         // GET: Contracts/Details/5
