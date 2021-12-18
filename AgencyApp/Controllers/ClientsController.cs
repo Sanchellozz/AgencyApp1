@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgencyApp.Controllers
 {
-    
+    [Authorize]
     public class ClientsController : Controller
     {
         private readonly AgencyDBContext _context;
@@ -28,9 +28,10 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Clients
-        [Authorize(Roles = "agent")]
+        
         public async Task<IActionResult> Index(string searchString)
         {
+            if (@User.IsInRole("agent")) { 
             var clients = from s in _context.Clients.Include(c => c.License)
             select s;
             if (!String.IsNullOrEmpty(searchString))
@@ -41,9 +42,18 @@ namespace AgencyApp.Controllers
             }
 
             return View(await clients.ToListAsync());
+            }
+            else
+            {
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+                string userId = currentUser.Id.ToString();
+                var Clientsview = _context.Clients.Include(a => a.License).Where(c => c.UserID == userId);
+                return View(Clientsview);
+            }
         }
 
         // GET: Clients/Details/5
+        [Authorize(Roles = "agent")]
         public async Task<IActionResult> Details(int? id, string? licensename)
         {
             if (id == null)
@@ -66,6 +76,7 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Clients/Create
+
         public async Task<IActionResult> CreateAsync()
         {
             if (@User.IsInRole("agent")) { 
@@ -100,12 +111,14 @@ namespace AgencyApp.Controllers
             ViewData["UserID"] = new SelectList(_userManager.Users, "Id", "Id", client.UserID);
             return View(client);
         }
+
         public IActionResult Privacy()
         {
             return View();
         }
 
         // GET: Clients/Edit/5
+        [Authorize(Roles = "agent")]
         public async Task<IActionResult> Edit(int? id)
         {
             ViewData["LicenseId"] = new SelectList(_context.Licenses, "Id", "Name");
@@ -129,6 +142,7 @@ namespace AgencyApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "agent")]
         public async Task<IActionResult> Edit(int id, [Bind("LicenseId,Passport,Id,Name,UserID")] Client client)
         {
             if (id != client.Id)

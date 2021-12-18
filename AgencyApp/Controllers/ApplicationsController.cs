@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgencyApp.Controllers
 {
+    [Authorize]
     public class ApplicationsController : Controller
     {
         private readonly AgencyDBContext _context;
@@ -28,6 +29,7 @@ namespace AgencyApp.Controllers
 
 
         // GET: Applications
+
         public async Task<IActionResult> Index()
         {
             if (@User.IsInRole("agent"))
@@ -118,6 +120,7 @@ namespace AgencyApp.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("ApplicationId,DictionaryId,ClientId,Telephone,Status")] Application application)
         {
 
+            
             if (id != application.ApplicationId)
             {
                 return NotFound();
@@ -128,6 +131,9 @@ namespace AgencyApp.Controllers
                 try
                 {
                     _context.Update(application);
+                    _context.Entry(application).Property(u => u.ClientId).IsModified = false;
+                    _context.Entry(application).Property(u => u.DictionaryId).IsModified = false;
+                    _context.Entry(application).Property(u => u.Telephone).IsModified = false;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

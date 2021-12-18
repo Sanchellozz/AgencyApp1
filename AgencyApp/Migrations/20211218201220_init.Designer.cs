@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgencyApp.Migrations
 {
     [DbContext(typeof(AgencyDBContext))]
-    [Migration("20211218154641_init")]
+    [Migration("20211218201220_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,10 +61,10 @@ namespace AgencyApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApplicationId"), 1L, 1);
 
-                    b.Property<int>("ClientId")
+                    b.Property<int?>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DictionaryId")
+                    b.Property<int?>("DictionaryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -279,15 +279,11 @@ namespace AgencyApp.Migrations
                 {
                     b.HasOne("AgencyApp.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("AgencyApp.Models.Dictionary", "Dictionary")
                         .WithMany()
-                        .HasForeignKey("DictionaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DictionaryId");
 
                     b.Navigation("Client");
 

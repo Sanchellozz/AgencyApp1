@@ -19,6 +19,7 @@
     </td>
     </tr>
 }
+}
 <table class="table">
     <thead>
         <tr>
@@ -47,11 +48,12 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                    @if (@User.IsInRole("agent")) {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                    }
                 <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
-}

@@ -14,10 +14,6 @@ namespace AgencyApp
             {
                 await roleManager.CreateAsync(new IdentityRole("admin"));
             }
-            if (await roleManager.FindByNameAsync("client") == null)
-            {
-                await roleManager.CreateAsync(new IdentityRole("client"));
-            }
             if (await roleManager.FindByNameAsync("agent") == null)
             {
                 await roleManager.CreateAsync(new IdentityRole("agent"));
