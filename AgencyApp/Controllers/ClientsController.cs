@@ -27,9 +27,17 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Clients
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var clients = _context.Clients.Include(c => c.License);
+            var clients = from s in _context.Clients.Include(c => c.License)
+            select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                clients = clients.Where(s => s.Name.Contains(searchString)
+                                       || s.License.Name.Contains(searchString)
+                                       || s.Passport.Contains(searchString));
+            }
+
             return View(await clients.ToListAsync());
         }
 

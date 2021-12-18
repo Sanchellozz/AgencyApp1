@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using AgencyApp.Data;
 using AgencyApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
+
 
 namespace AgencyApp.Controllers
 {
@@ -23,14 +25,26 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Contracts
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public ViewResult Index(string sortOrder, string searchString, string currentFilter, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.ClientNameSortParm = sortOrder == "ClientName" ? "ClientName_desc" : "ClientName";
             ViewBag.AgentNameSortParm = sortOrder == "AgentName" ? "AgentName_desc" : "AgentName";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.IdSortParm = sortOrder == "Id" ? "Id_desc" : "Id";
             ViewBag.DicSortParm = sortOrder == "Dic" ? "Dic_desc" : "Dic";
             ViewBag.PriceSortParm = sortOrder == "Price" ? "Price_desc" : "Price";
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
             var contracts = from s in _context.Contract.Include(c => c.Agent).Include(c => c.Client).Include(c => c.Dictionary)
             select s;
             if (!String.IsNullOrEmpty(searchString))
@@ -82,7 +96,9 @@ namespace AgencyApp.Controllers
                     contracts = contracts.OrderBy(s => s.ContractId);
                     break;
             }
-            return View(contracts.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(contracts.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Contracts/Details/5
