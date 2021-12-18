@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgencyApp.Data;
 using AgencyApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgencyApp.Controllers
 {
+    [Authorize(Roles = "agent")]
     public class ContractsController : Controller
     {
         private readonly AgencyDBContext _context;

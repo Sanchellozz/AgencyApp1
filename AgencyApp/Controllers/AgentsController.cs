@@ -79,6 +79,8 @@ namespace AgencyApp.Controllers
         // GET: Agents/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["DegreeId"] = new SelectList(_context.Degrees, "id", "name");
+            ViewData["UserID"] = new SelectList(_userManager.Users, "Id", "UserName");
             if (id == null)
             {
                 return NotFound();

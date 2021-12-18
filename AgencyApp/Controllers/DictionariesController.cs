@@ -46,6 +46,7 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Dictionaries/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
@@ -68,6 +69,7 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Dictionaries/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,6 +90,7 @@ namespace AgencyApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Text,Price")] Dictionary dictionary)
         {
             if (id != dictionary.Id)
@@ -119,6 +122,7 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Dictionaries/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,6 +143,7 @@ namespace AgencyApp.Controllers
         // POST: Dictionaries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var dictionary = await _context.Dictionary.FindAsync(id);

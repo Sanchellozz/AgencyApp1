@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgencyApp.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "agent")]
     public class ClientsController : Controller
     {
         private readonly AgencyDBContext _context;
@@ -74,7 +74,7 @@ namespace AgencyApp.Controllers
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Был создан студент");
+                _logger.LogInformation("Был создан клиент");
                 return RedirectToAction(nameof(Index));
 
             }
@@ -86,6 +86,8 @@ namespace AgencyApp.Controllers
         // GET: Clients/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["LicenseId"] = new SelectList(_context.Licenses, "Id", "Name");
+            ViewData["UserID"] = new SelectList(_userManager.Users, "Id", "UserName");
             if (id == null)
             {
                 return NotFound();

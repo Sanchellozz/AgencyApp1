@@ -4,17 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Договоры</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Создать</a>
 </p>
 @using (Html.BeginForm())
 {
     <tr>
     <td>
-        Find by name: @Html.TextBox("SearchString")  
-        <input type="submit" value="Search" />
+        @Html.TextBox("SearchString")  
+        <input type="submit" value="Поиск" />
     </td>
     </tr>
 }
@@ -64,9 +64,8 @@
                 @Html.DisplayFor(modelItem => item.Dictionary.Price)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ContractId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ContractId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ContractId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ContractId">Изменить</a> |
+                <a asp-action="Delete" asp-route-id="@item.ContractId">Удалить</a>
             </td>
         </tr>
 }

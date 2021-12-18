@@ -19,17 +19,8 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         @if (@User.IsInRole("admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Degrees" asp-action="index">Должность</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="index">Клиенты</a>
                             </li>
@@ -40,15 +31,21 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Licenses" asp-action="index">Лицензия</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Degrees" asp-action="index">Должность</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="index">Роли</a>
                             </li>
                         }
                         <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Dictionaries" asp-action="index">Услуги</a>
                         </li>
+                        @if (@User.IsInRole("agent"))
+                        {
                         <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Contracts" asp-action="index">Услуги</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Contracts" asp-action="index">Договор</a>
                         </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

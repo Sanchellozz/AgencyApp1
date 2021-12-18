@@ -4,41 +4,39 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Создать</h1>
 
-<h4>Contract</h4>
+<h4>Договор</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
+                Имя клиента
                 <select asp-for="ClientId" class ="form-control" asp-items="ViewBag.ClientName"></select>
             </div>
             <div class="form-group">
-                <label asp-for="AgentId" class="control-label"></label>
+                Имя агента
                 <select asp-for="AgentId" class ="form-control" asp-items="ViewBag.AgentName"></select>
             </div>
             <div class="form-group">
-                <label asp-for="DictionaryId" class="control-label"></label>
+                Страховой пакет
                 <select asp-for="DictionaryId" class ="form-control" asp-items="ViewBag.DictionaryName"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
+                Дата заключения
                 <input asp-for="Date" class="form-control" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Создать" class="btn btn-primary" />|
+                <a asp-action="Index">Назаж</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
