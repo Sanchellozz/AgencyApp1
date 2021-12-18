@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgencyApp.Migrations
 {
     [DbContext(typeof(AgencyDBContext))]
-    [Migration("20211216154812_init")]
+    [Migration("20211218154641_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,36 @@ namespace AgencyApp.Migrations
                         .HasFilter("[UserID] IS NOT NULL");
 
                     b.ToTable("Agents");
+                });
+
+            modelBuilder.Entity("AgencyApp.Models.Application", b =>
+                {
+                    b.Property<int>("ApplicationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApplicationId"), 1L, 1);
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DictionaryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Telephone")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApplicationId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("DictionaryId");
+
+                    b.ToTable("Application");
                 });
 
             modelBuilder.Entity("AgencyApp.Models.Client", b =>
@@ -243,6 +273,25 @@ namespace AgencyApp.Migrations
                     b.Navigation("Degree");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AgencyApp.Models.Application", b =>
+                {
+                    b.HasOne("AgencyApp.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AgencyApp.Models.Dictionary", "Dictionary")
+                        .WithMany()
+                        .HasForeignKey("DictionaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Dictionary");
                 });
 
             modelBuilder.Entity("AgencyApp.Models.Client", b =>

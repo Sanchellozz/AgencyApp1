@@ -14,7 +14,7 @@ using X.PagedList;
 
 namespace AgencyApp.Controllers
 {
-    [Authorize(Roles = "agent")]
+    
     public class ContractsController : Controller
     {
         private readonly AgencyDBContext _context;
@@ -25,7 +25,8 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Contracts
-        public ViewResult Index(string sortOrder, string searchString, string currentFilter, int? page)
+        [Authorize(Roles = "agent")]
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.ClientNameSortParm = sortOrder == "ClientName" ? "ClientName_desc" : "ClientName";
@@ -34,6 +35,7 @@ namespace AgencyApp.Controllers
             ViewBag.IdSortParm = sortOrder == "Id" ? "Id_desc" : "Id";
             ViewBag.DicSortParm = sortOrder == "Dic" ? "Dic_desc" : "Dic";
             ViewBag.PriceSortParm = sortOrder == "Price" ? "Price_desc" : "Price";
+
             if (searchString != null)
             {
                 page = 1;
@@ -45,6 +47,8 @@ namespace AgencyApp.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
+            ViewBag.CurrentFilter = searchString;
+
             var contracts = from s in _context.Contract.Include(c => c.Agent).Include(c => c.Client).Include(c => c.Dictionary)
             select s;
             if (!String.IsNullOrEmpty(searchString))
@@ -52,8 +56,10 @@ namespace AgencyApp.Controllers
                 contracts = contracts.Where(s => s.Client.Name.Contains(searchString)
                                        || s.Agent.Name.Contains(searchString)
                                        || s.Dictionary.Price.Equals(searchString)
-                                       || s.Dictionary.Name.Contains(searchString));
+                                       || s.Dictionary.Name.Contains(searchString)
+                                       || s.Date.Equals(searchString));
             }
+            
             switch (sortOrder)
             {
                 case "ClientName":
@@ -100,6 +106,7 @@ namespace AgencyApp.Controllers
             int pageNumber = (page ?? 1);
             return View(contracts.ToPagedList(pageNumber, pageSize));
         }
+
 
         // GET: Contracts/Details/5
         public async Task<IActionResult> Details(int? id)

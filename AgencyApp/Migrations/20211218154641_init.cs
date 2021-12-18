@@ -128,6 +128,34 @@ namespace AgencyApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Application",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DictionaryId = table.Column<int>(type: "int", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    Telephone = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Application", x => x.ApplicationId);
+                    table.ForeignKey(
+                        name: "FK_Application_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Application_Dictionary_DictionaryId",
+                        column: x => x.DictionaryId,
+                        principalTable: "Dictionary",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contract",
                 columns: table => new
                 {
@@ -174,6 +202,16 @@ namespace AgencyApp.Migrations
                 filter: "[UserID] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Application_ClientId",
+                table: "Application",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Application_DictionaryId",
+                table: "Application",
+                column: "DictionaryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Clients_LicenseId",
                 table: "Clients",
                 column: "LicenseId");
@@ -203,6 +241,9 @@ namespace AgencyApp.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Application");
+
             migrationBuilder.DropTable(
                 name: "Contract");
 

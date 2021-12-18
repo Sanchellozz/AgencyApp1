@@ -25,5 +25,7 @@ namespace AgencyApp.Data
         public DbSet<AgencyApp.Models.Dictionary> Dictionary { get; set; }
 
         public DbSet<AgencyApp.Models.Contract> Contract { get; set; }
+
+        public DbSet<AgencyApp.Models.Application> Application { get; set; }
     }
 }

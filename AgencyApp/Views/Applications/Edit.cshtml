@@ -1,4 +1,4 @@
-﻿@model AgencyApp.Models.License
+﻿@model AgencyApp.Models.Application
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,21 +6,21 @@
 
 <h1>Изменить</h1>
 
-<h4>Лицо</h4>
+<h4>Заявку</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ApplicationId" />
             <div class="form-group">
-                Название
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                Статус
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Сохранить" class="btn btn-primary" />|
-                    <a asp-action="Index">Назад</a>
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+                <a asp-action="Index">Назад</a>
             </div>
         </form>
     </div>

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<AgencyApp.Models.Application>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Заявки</h1>
+
+<p>
+    <a asp-action="Create">Создать</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Телефон
+            </th>
+            <th>
+                Статус
+            </th>
+            <th>
+                Имя клиента
+            </th>
+            <th>
+                Пакет страхования
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telephone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Client.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dictionary.Name)
+            </td>
+            <td>
+                @if (@User.IsInRole("admin")){
+                <a asp-action="Edit" asp-route-id="@item.ApplicationId">Изменить</a> 
+                <a asp-action="Delete" asp-route-id="@item.ApplicationId">Удалить</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

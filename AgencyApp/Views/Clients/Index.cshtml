@@ -9,6 +9,7 @@
 <p>
     <a asp-action="Create">Создать</a>
 </p>
+@if (@User.IsInRole("agent")){
 @using (Html.BeginForm())
 {
     <tr>
@@ -53,3 +54,4 @@
 }
     </tbody>
 </table>
+}

@@ -1,0 +1,40 @@
+﻿@model AgencyApp.Models.Application
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Создать</h1>
+
+<h4>Заявки</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                Пакет страхования
+                <select asp-for="DictionaryId" class ="form-control" asp-items="ViewBag.DictionaryName"></select>
+            </div>
+            <div class="form-group">
+                Имя клиента
+                <select asp-for="ClientId" class ="form-control" asp-items="ViewBag.ClientName"></select>
+            </div>
+            <div class="form-group">
+                Телефон
+                <input asp-for="Telephone" class="form-control" />
+                <span asp-validation-for="Telephone" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary" />|
+                <a asp-action="Index">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

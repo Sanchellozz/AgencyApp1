@@ -12,12 +12,13 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgencyApp.Controllers
 {
-    [Authorize(Roles = "agent")]
+    
     public class ClientsController : Controller
     {
         private readonly AgencyDBContext _context;
         private readonly ILogger _logger;
         UserManager<User> _userManager;
+
 
         public ClientsController(AgencyDBContext context, ILogger<ClientsController> logger, UserManager<User> userManager)
         {
@@ -27,6 +28,7 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Clients
+        [Authorize(Roles = "agent")]
         public async Task<IActionResult> Index(string searchString)
         {
             var clients = from s in _context.Clients.Include(c => c.License)
@@ -64,11 +66,19 @@ namespace AgencyApp.Controllers
         }
 
         // GET: Clients/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
+            if (@User.IsInRole("agent")) { 
             ViewData["LicenseId"] = new SelectList(_context.Licenses, "Id", "Name");
             ViewData["UserID"] = new SelectList(_userManager.Users, "Id", "UserName");
             return View();
+            }
+            var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = currentUser.Id.ToString();
+            ViewData["LicenseId"] = new SelectList(_context.Licenses, "Id", "Name");
+            ViewData["UserID"] = new SelectList(_userManager.Users.Where(c => c.Id == userId), "Id", "UserName");
+            return View();
+
         }
 
         // POST: Clients/Create
@@ -83,12 +93,16 @@ namespace AgencyApp.Controllers
                 _context.Add(client);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Был создан клиент");
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(HomeController.Privacy));
 
             }
             ViewData["LicenseId"] = new SelectList(_context.Licenses, "Id", "Id", client.LicenseId);
             ViewData["UserID"] = new SelectList(_userManager.Users, "Id", "Id", client.UserID);
             return View(client);
+        }
+        public IActionResult Privacy()
+        {
+            return View();
         }
 
         // GET: Clients/Edit/5

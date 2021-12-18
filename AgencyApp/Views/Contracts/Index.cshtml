@@ -1,26 +1,24 @@
 ﻿@model X.PagedList.IPagedList<AgencyApp.Models.Contract>
 @using X.PagedList.Mvc.Core
 @using X.PagedList
-
-
+<link rel="stylesheet" href="~/css/PagedList.css" asp-append-version="true" />
 
 @{
-    ViewData["Title"] = "Contracts";
+    ViewData["Title"] = "Index";
 }
+
 
 <h1>Договоры</h1>
 
 <p>
     <a asp-action="Create">Создать</a>
 </p>
-@using (Html.BeginForm("Index", "Contract", FormMethod.Get))
+@using (Html.BeginForm())
 {
-    <tr>
-    <td>
-        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)  
+    <p>
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
         <input type="submit" value="Поиск" />
-    </td>
-    </tr>
+    </p>
 }
 <table class="table">
     <thead>

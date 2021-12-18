@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgencyApp.Controllers
 {
-    [Authorize(Roles = "admin")]
+    
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
