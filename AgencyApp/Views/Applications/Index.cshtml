@@ -43,7 +43,7 @@
                 @Html.DisplayFor(modelItem => item.Dictionary.Name)
             </td>
             <td>
-                @if (@User.IsInRole("admin")){
+                @if (@User.IsInRole("agent")){
                 <a asp-action="Edit" asp-route-id="@item.ApplicationId">Изменить</a> 
                 <a asp-action="Delete" asp-route-id="@item.ApplicationId">Удалить</a>
                 }
